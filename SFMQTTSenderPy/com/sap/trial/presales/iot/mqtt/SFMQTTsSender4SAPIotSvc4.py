@@ -25,7 +25,7 @@ humid_str = "40"
 
 mqttclnt = paho.Client()
 mqttclnt.on_publish = on_publish
-mqttclnt.tls_set(certfile="certificate.pem", keyfile="plainkey.pem") # http://test.mosquitto.org/ssl/mosquitto.org.crt
+mqttclnt.tls_set(certfile="certificate.pem", keyfile="plainkey.pem") # downloaded from IoTServices for this device as *.ks file, needs to be converted into *.pem files
 mqttclnt.connect("iotae-beta03.eu10.cp.iot.sap", 8883)
 print("Message Body: " + "{\"profileId\":4,\"measureIds\":[510],\"values\":[\"" + temp_str + "\",\"" + humid_str + "\"],\"logNodeAddr\":\"" + logNodeAddrStr + "\"}")
 

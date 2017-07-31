@@ -20,10 +20,8 @@ mqttclnt.on_subscribe = on_subscribe
 mqttclnt.on_message = on_message
 
 # SF: For test.mosquitto.org test server
-mqttclnt.tls_set(certfile="certificate.pem", keyfile="plainkey.pem") # http://test.mosquitto.org/ssl/mosquitto.org.crt
-print ("Next, call Connect:")
+mqttclnt.tls_set(certfile="certificate.pem", keyfile="plainkey.pem") # downloaded from IoTServices for this device as *.ks file, needs to be converted into *.pem files
 mqttclnt.connect("iotae-beta03.eu10.cp.iot.sap", 8883)
-print ("Next, call subscribe:")
-msg_id = mqttclnt.subscribe("measures\/10:12:68:FA:01", qos=1)
+mqttclnt.subscribe("measures/10:12:68:FA:01", qos=1)
 print ("Entering loop")
 mqttclnt.loop_forever()
