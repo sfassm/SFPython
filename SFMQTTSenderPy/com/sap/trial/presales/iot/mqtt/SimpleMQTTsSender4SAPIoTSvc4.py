@@ -29,7 +29,6 @@ timeIntervall = 5
 
 mqttclnt = paho.Client(client_id=DEVICE_ID)
 mqttclnt.on_publish = on_publish
-#mqttclnt.username_pw_set("root#0", "KYTAcbyNY5qlsmh")
 mqttclnt.tls_set(certfile=CERTIFICATE_FILE, keyfile=PLAIN_PRIVATEKEY_FILE) # downloaded from IoTServices for this device as *.ks file, needs to be converted into *.pem files
 mqttclnt.connect("iotae-beta03.eu10.cp.iot.sap", 8883)
 
@@ -38,7 +37,6 @@ while True:
         # Create some random values
         humidity = random.randint(0, 100)
         temperature = random.randint(10, 30)
-        #data = json.dumps({"profileId":4,"measureIds":[510],"values": ['{}'.format(temperature), '{}'.format(humidity)],"logNodeAddr":logNodeAddrStr})
         data = json.dumps({"profileId":4,"measureIds":[510],"values": ['{}'.format(temperature), '{}'.format(humidity)],"logNodeAddr":LOG_NODE_ADDR})
         print("Publishing message under topic=" + PUB_TOPIC + ", JSON body: " + data)
         # Publish data:
