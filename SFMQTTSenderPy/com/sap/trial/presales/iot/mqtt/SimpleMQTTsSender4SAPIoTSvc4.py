@@ -1,6 +1,12 @@
 '''
 Created on 31 Jul 2017
 
+Simple example of using the PAHO Python lib for publishing messages to SAP IoT Services 4.x
+(Values are created randomly for demonstrating purposes.)
+Important: 
+The client certificate and private key which are retrieved in a client.ks file from 
+SAP IoT Services for the given device must be extracted and provided as *.pem files
+
 @author: d069454
 '''
 import paho.mqtt.client as paho
@@ -8,7 +14,7 @@ import time
 import json
 import random
 
-# capture receipt when successfully published
+# Capture receipt when successfully published
 def on_publish(client, userdata, msg_id):
     print("on_publish called, msg_id: " + str(msg_id) + " successfully published.\n")
 
@@ -35,7 +41,7 @@ while True:
         print("Publishing message under topic=" + PUB_TOPIC + ", JSON body: " + data)
         # Publish data:
         (rc, msg_id) = mqttclnt.publish(PUB_TOPIC, data)
-        # wait some time to read again sensor values
+        # Wait some time (e.g. simulating reading potential sensor values)
         time.sleep(timeIntervall)
     
     except IOError:
