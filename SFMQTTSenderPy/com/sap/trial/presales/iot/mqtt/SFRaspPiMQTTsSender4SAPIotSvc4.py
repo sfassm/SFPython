@@ -15,7 +15,7 @@ Created on 28 Jul 2017
 import paho.mqtt.client as paho
 import time
 import json
-#import Adafruit_DHT as dht # only available on Raspberry Pi
+import Adafruit_DHT as dht # only available on Raspberry Pi
 
 # Capture receipt when successfully published
 def on_publish(client, userdata, msg_id):
@@ -40,7 +40,8 @@ mqttclnt.connect("iotae-beta03.eu10.cp.iot.sap", 8883)
 while True:
     try:
         # Read values from DHT sensor connected to Raspberry Pi GPIO using Adafruit library
-        #humidity, temperature = dht.read_retry(dht.DHT11, GPIO_SENSOR_PORT)
+        humidity, temperature = dht.read_retry(dht.DHT11, GPIO_SENSOR_PORT)
+        # Fixed values for testing only
         humidity, temperature = [20, 40]
         humidity = int(humidity)
         temperature = int(temperature)
