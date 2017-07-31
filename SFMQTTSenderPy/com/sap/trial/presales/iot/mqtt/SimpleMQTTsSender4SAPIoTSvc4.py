@@ -13,9 +13,8 @@ def on_publish(client, userdata, msg_id):
     print("on_publish called, msg_id: " + str(msg_id) + " successfully published.\n")
 
 # Addresses and IDs are case-sensitive!!!    
-DEVICE_ID = "10:12:68:FA:01"                        # Device physical address / Unique Address, e.g. MAC address '5e0a270d79f9389b' w/o ':' separators
-#LOG_NODE_ADDR = "00:00:00:02" #"SF_Local_PAHO_UIClient_Sensor_1"   # Sensor address / physical address: "60c8faf8d6560b7c"
-LOG_NODE_ADDR = "SF_Local_PAHO_UIClient_Sensor_1"
+DEVICE_ID = "10:12:68:FA:01"                        # Device physical address / Unique Address, e.g. MAC address '5e:0a:27:0d:79:f9:38:9b' WITH ':' separators
+LOG_NODE_ADDR = "SF_Local_PAHO_UIClient_Sensor_1"   # Sensor address / physical address: "<simple_string_as_given>", e.g. "00:00:00:02"
 PUB_TOPIC = "measures/" + DEVICE_ID                 # MQTT pub topic
 
 timeIntervall = 5
