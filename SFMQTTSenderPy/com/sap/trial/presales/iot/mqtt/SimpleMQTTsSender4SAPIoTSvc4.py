@@ -18,8 +18,6 @@ LOG_NODE_ADDR = "SF_Local_PAHO_UIClient_Sensor_1"   # Sensor address / physical 
 PUB_TOPIC = "measures/" + DEVICE_ID                 # MQTT pub topic
 
 timeIntervall = 5
-temperature = 20
-humidity = 40
 
 mqttclnt = paho.Client(client_id=DEVICE_ID)
 mqttclnt.on_publish = on_publish
