@@ -1,57 +1,58 @@
-# SF: Python script based on the officially available MQTT Python client
-# see https://eclipse.org/paho/clients/python/
-# more details are maintained in the README.TXT file of this project
-# It uses the SAP Cloud Platform as message broker.
-# SSL parts of the code are from https://stackoverflow.com/questions/24637763/wrapping-mqtt-data-in-ssl-certificate-while-sending-it-to-mqtt-broker#24652059
 
 '''
+Simple example of using the PAHO Python lib for publishing messages to SAP IoT Services 4.x
+Values are read from DHT11 Temp&Humidity sensor connected to Raspberry CPIO port 4 (Pin7)
+using the Adafruit Python library.
+
+Important: 
+The client certificate and private key which are retrieved in a client.ks file from 
+SAP IoT Services for the given device must be extracted and provided as *.pem files
+
 Created on 28 Jul 2017
 
 @author: d069454
 '''
 import paho.mqtt.client as paho
 import time
+import json
+import Adafruit_DHT as dht # only available on Raspberry Pi
 
-# capture receipt when successfully published
+# Capture receipt when successfully published
 def on_publish(client, userdata, msg_id):
     print("on_publish called, msg_id: " + str(msg_id) + " successfully published.\n")
-    
-logNodeAddrStr = "SF_Local_PAHO_UIClient_Sensor_1"
-i = 1
-# temp_str = '{0:0.1f}'.format(20)
-# humid_str = '{0:0.1f}'.format(40)
-temp_str = "20"
-humid_str = "40"
 
-mqttclnt = paho.Client()
+# Addresses and IDs are case-sensitive!!!    
+DEVICE_ID = "10:12:68:FA:01"                        # Device physical address / Unique Address, e.g. MAC address '5e:0a:27:0d:79:f9:38:9b' WITH ':' separators
+LOG_NODE_ADDR = "SF_Local_PAHO_UIClient_Sensor_1"   # Sensor address / physical address: "<simple_string_as_given>", e.g. "00:00:00:02"
+PUB_TOPIC = "measures/" + DEVICE_ID                 # MQTT pub topic
+GPIO_SENSOR_PORT = 4                                # port to which DHT sensor is connected on Raspberry Pi GPIO, e.g. Port4=PIN7
+
+timeIntervall = 5
+
+mqttclnt = paho.Client(client_id=DEVICE_ID)
 mqttclnt.on_publish = on_publish
+#mqttclnt.username_pw_set("root#0", "KYTAcbyNY5qlsmh")
 mqttclnt.tls_set(certfile="certificate.pem", keyfile="plainkey.pem") # downloaded from IoTServices for this device as *.ks file, needs to be converted into *.pem files
 mqttclnt.connect("iotae-beta03.eu10.cp.iot.sap", 8883)
-print("Message Body: " + "{\"profileId\":4,\"measureIds\":[510],\"values\":[\"" + temp_str + "\",\"" + humid_str + "\"],\"logNodeAddr\":\"" + logNodeAddrStr + "\"}")
 
-for i in range(1, 10):
-#     temperature = 20 +i
-#     humidity = 40 -i
-#     temp_str = '{0:0.1f}'.format(temperature)
-#     humid_str = '{0:0.1f}'.format(humidity)
+while True:
+    try:
+        # Read values from DHT sensor connected to Raspberry Pi GPIO using Adafruit library
+        humidity, temperature = dht.read_retry(dht.DHT11, GPIO_SENSOR_PORT)
+        humidity = int(humidity)
+        temperature = int(temperature)
+
+        #data = json.dumps({"profileId":4,"measureIds":[510],"values": ['{}'.format(temperature), '{}'.format(humidity)],"logNodeAddr":logNodeAddrStr})
+        data = json.dumps({"profileId":4,"measureIds":[510],"values": ['{}'.format(temperature), '{}'.format(humidity)],"logNodeAddr":LOG_NODE_ADDR})
+        print("Publishing message under topic=" + PUB_TOPIC + ", JSON body: " + data)
+        # Publish data:
+        (rc, msg_id) = mqttclnt.publish(PUB_TOPIC, data)
+        # Wait some time (e.g. simulating reading potential sensor values)
+        time.sleep(timeIntervall)
     
-    if i <= 5 :
-        print "Temperature smaller or equal than 25, sent to iotae-beta03.eu10.cp.iot.sap with temperature = " + temp_str + "C" + ", humidity = " + humid_str + "%"
-        # w/o return-receipt: mqttclnt.publish("measures/10:12:68:FA:01", '{0:0.1f}'.format(temperature))
-        (rc, msg_id) = mqttclnt.publish("measures/10:12:68:FA:01", "{\"profileId\":4,\"measureIds\":[510],\"values\":[\"" + temp_str + "\",\"" + humid_str + "\"],\"logNodeAddr\":\"" + logNodeAddrStr + "\"}")
-    else:
-        print "Temperature larger than 25, sent to iotae-beta03.eu10.cp.iot.sap with humidity = " + temp_str + "C, humidity = " + humid_str + "%\n"
-        mqttclnt.publish("measures/10:12:68:FA:01", "{\"profileId\":4,\"measureIds\":[510],\"values\":[\"" + temp_str + "\",\"" + humid_str + "\"],\"logNodeAddr\":\"" + logNodeAddrStr + "\"}")
-    time.sleep(5)
-        
-# def readTemperature():
-#     while True:
-#         try:
-#             temperature = grovepi.temp(temp_sensor, '1,2')
-#             publish.single("office/temperature", '{0:0.1f}'.format(temperature), hostname="192.168.10.200")
-#             time.sleep(5)
-#         except KeyboardInterrupt:
-#             break
-#         except IOError:
-#             print "IOError happened"
-# readTemperature()
+    except IOError:
+        print ("Error")
+
+
+
+    

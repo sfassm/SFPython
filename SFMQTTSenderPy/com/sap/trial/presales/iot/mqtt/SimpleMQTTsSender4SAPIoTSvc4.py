@@ -22,13 +22,15 @@ def on_publish(client, userdata, msg_id):
 DEVICE_ID = "10:12:68:FA:01"                        # Device physical address / Unique Address, e.g. MAC address '5e:0a:27:0d:79:f9:38:9b' WITH ':' separators
 LOG_NODE_ADDR = "SF_Local_PAHO_UIClient_Sensor_1"   # Sensor address / physical address: "<simple_string_as_given>", e.g. "00:00:00:02"
 PUB_TOPIC = "measures/" + DEVICE_ID                 # MQTT pub topic
+CERTIFICATE_FILE = "PahoUIClientCerts/certificate.pem"      # location of device's certificate file (extracted from downloaded client.ks)
+PLAIN_PRIVATEKEY_FILE = "PahoUIClientCerts/plainkey.pem"    # location of file with device's plain private key (extracted from downloaded client.ks)
 
 timeIntervall = 5
 
 mqttclnt = paho.Client(client_id=DEVICE_ID)
 mqttclnt.on_publish = on_publish
 #mqttclnt.username_pw_set("root#0", "KYTAcbyNY5qlsmh")
-mqttclnt.tls_set(certfile="certificate.pem", keyfile="plainkey.pem") # downloaded from IoTServices for this device as *.ks file, needs to be converted into *.pem files
+mqttclnt.tls_set(certfile=CERTIFICATE_FILE, keyfile=PLAIN_PRIVATEKEY_FILE) # downloaded from IoTServices for this device as *.ks file, needs to be converted into *.pem files
 mqttclnt.connect("iotae-beta03.eu10.cp.iot.sap", 8883)
 
 while True:
