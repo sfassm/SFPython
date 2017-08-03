@@ -30,12 +30,12 @@ for i in range(1, 10):
         
 # Using files and comparing strings:
 # Reading two files and comparing the comma-separated strings within the string
-f1 = open('/Users/d069454/Downloads/pythonstring1.txt', 'r')
+f1 = open('../samples/pythonstring1.txt', 'r')
 s= ""
 for line in f1:
     s+=line
 f1.close()
-f2 = open('/Users/d069454/Downloads/pythonstring2.txt', 'r')
+f2 = open('../samples/pythonstring2.txt', 'r')
 s2= ""
 for line in f2:
     s2+=line
@@ -50,8 +50,8 @@ difference = list(set(list1).difference(set(list2)))
 print (difference)
 
 # SF: Reading content from one file and writing it into another:
-f = open('/Users/d069454/Downloads/pythonstring2.txt', 'r')
-output = open('/Users/d069454/Downloads/pythonstring3.txt', 'w')
+f = open('../samples/pythonstring2.txt', 'r')
+output = open('../samples/pythonstring3.txt', 'w')
 for line in f:
     output.write(line.rstrip() + '\n')
 f.close()
