@@ -19,11 +19,15 @@ def on_publish(client, userdata, msg_id):
     print("on_publish called, msg_id: " + str(msg_id) + " successfully published.\n")
 
 # Addresses and IDs are case-sensitive!!!    
-DEVICE_ID = "10:12:68:FA:01"                        # Device physical address / Unique Address, e.g. MAC address '5e:0a:27:0d:79:f9:38:9b' WITH ':' separators
-LOG_NODE_ADDR = "SF_Local_PAHO_UIClient_Sensor_1"   # Sensor address / physical address: "<simple_string_as_given>", e.g. "00:00:00:02"
+#DEVICE_ID = "10:12:68:FA:01"                        # Device physical address / Unique Address, e.g. MAC address '5e:0a:27:0d:79:f9:38:9b' WITH ':' separators
+#LOG_NODE_ADDR = "SF_Local_PAHO_UIClient_Sensor_1"   # Sensor address / physical address: "<simple_string_as_given>", e.g. "00:00:00:02"
+#DEVICE_ID = "B8:27:EB:C3:1a:AA"                        # Device physical address / Unique Address, e.g. MAC address '5e:0a:27:0d:79:f9:38:9b' WITH ':' separators
+#LOG_NODE_ADDR = "D069454_Sensor_DHT11_Rasp301"   # Sensor address / physical address: "<simple_string_as_given>", e.g. "00:00:00:02"
+DEVICE_ID = "00:87:40:71:C2:AE"
+LOG_NODE_ADDR = "D069454_Sensor_DHT11_RaspBplus"
 PUB_TOPIC = "measures/" + DEVICE_ID                 # MQTT pub topic
-CERTIFICATE_FILE = "PahoUIClientCerts/certificate.pem"      # location of device's certificate file (extracted from downloaded client.ks)
-PLAIN_PRIVATEKEY_FILE = "PahoUIClientCerts/plainkey.pem"    # location of file with device's plain private key (extracted from downloaded client.ks)
+CERTIFICATE_FILE = "clientcerts/sfraspb301_client_certificate.pem"      # location of device's certificate file (extracted from downloaded client.ks)
+PLAIN_PRIVATEKEY_FILE = "clientcerts/sfraspb301_client_certificate_privatekey_plain.pem"    # location of file with device's plain private key (extracted from downloaded client.ks)
 
 timeIntervall = 5
 
