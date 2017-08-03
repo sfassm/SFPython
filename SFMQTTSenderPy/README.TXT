@@ -20,9 +20,28 @@ Alternatively use installation of MQTT python client:
  
  5. Connect DHT Sensor (Temp+Humidity) to Pi (VCC=PIN1, GRND=PIN6, DATA=PIN7=GPIO-Port4)
  
- 6. Use Adafruit lib for reading sensor data
+ 6. Use Adafruit lib for reading sensor data. Test sensor with script:
+a. Adjust sensor type in dot.read_retry(dht.DHT11/22, gpio_port)
+b. sudo python AdafruitDHTTest.py
  
-  EXAMPLES
+ 7) Download client_certificate.zip file from IoT Services for your device
+and extract client certificate and plain private key from ZIP file into PEM files.
+'create_certificate <name_of_the_downloaded_ZIP> <your_directory_with_the_downloaded_ZIP>'
+
+8) Edit SimpleMQTTsSender4SAPIoTSvc4.py and SFRaspPiMQTTsSender4SAPIotSvc4.py 
+Adjust:
+- DeviceID: <MAC address under which device was registered with IoT Services>
+- LogNodeAddr: <Address_of_Sensor_connected_to_the_device>
+- CERTIFICATE_FILE: extracted client_certificate.pem
+- PLAIN_PRIVATE_KEY_FILE: extracted privat_key.pem (plain)
+- sending intervall of data in SFRaspPiMQTTsSender4SAPIotSvc4.py
+
+9) Check whether SFRaspPiMQTTsSender4SAPIotSvc4.py is already running (autostarted by
+file /etc/init/autostart_pi_sensor_scripts.conf)
+ps aux | grep autostart_pi_sensro_scripts.conf
+ 
+ 
+ CODE EXAMPLES
  ==========
 1) Example Python Script using adafruit lib:
 import Adafruit_DHT as dht
