@@ -29,7 +29,7 @@ while True:
         httpsrequ = requests.post('https://iotae-beta03.eu10.cp.iot.sap/iot/gateway/rest/measures/{}'.format(DEVICE_ID),
                           data=data,
                           headers=headers,
-                          cert=('client_certificate.pem','client_certificate_privatekey_plain.pem'),
+                          cert=('clientcerts/device_sf-rapsberry_01_client_certificate.pem','clientcerts/device_sf-rapsberry_01_client_certificate_privatekey_plain.pem'),
                           timeout=5)
         
         # Deal with returned HTTP status code:
